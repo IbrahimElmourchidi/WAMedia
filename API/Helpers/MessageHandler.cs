@@ -47,7 +47,7 @@ public class MessageHandler
                 break;
             case "document":
                 var documentId = message.entry[0].changes[0].value.messages[0].document.id;
-                mimeType = message.entry[0].changes[0].value.messages[0].document.mime_type;
+                mimeType = message.entry[0].changes[0].value.messages[0].document.filename;
                 downloadDocument(documentId, mimeType);
                 break;
             case "audio":
@@ -107,13 +107,13 @@ public class MessageHandler
 
     private async Task<bool> downloadDocument(string documentId, string mimeType)
     {
-        var extension = mimeType.Split('/')[1];
+      
         _logger.LogInformation(mimeType);
         var mediaUrl = await GetMediaUrl(documentId);
         if (mediaUrl != null)
         {
             byte[] fileBytes = await _httpClient.GetByteArrayAsync(mediaUrl);
-            await File.WriteAllBytesAsync($"files/documents/{documentId}.{extension}", fileBytes);
+            await File.WriteAllBytesAsync($"files/documents/{documentId}.{mimeType}", fileBytes);
             return true;
         }
         _logger.LogError("cannot save document locally");
