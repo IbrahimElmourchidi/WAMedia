@@ -36,9 +36,9 @@ public class Webhook : ControllerBase
     [HttpPost]
     public void MessageRecivedAsync([FromBody] MessageObject body)
     {
-        var message = JsonSerializer.Serialize(body);
+        // var message = JsonSerializer.Serialize(body);
         // _logger.LogInformation(body.ToString());
-        _logger.LogInformation(message);
+        // _logger.LogInformation(message);
         _handler.HandleMessage(body);
     }
 
